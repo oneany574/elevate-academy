@@ -1,29 +1,75 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Header } from "@/components/site/Header";
+import { Footer } from "@/components/site/Footer";
+import { HeroVideoSection } from "@/components/site/HeroVideoSection";
+import { SearchTabs } from "@/components/site/SearchTabs";
+import { MoreThanCollege } from "@/components/site/MoreThanCollege";
+import { FeaturedCourses } from "@/components/site/FeaturedCourses";
+import { LifeBento } from "@/components/site/LifeBento";
+import { VirtualTour } from "@/components/site/VirtualTour";
+import { GlobalExperience } from "@/components/site/GlobalExperience";
+import { PartnerMarquee } from "@/components/site/PartnerMarquee";
+import { WhatsNew } from "@/components/site/WhatsNew";
+import { TestimonialSlider } from "@/components/site/TestimonialSlider";
+import { CTASection } from "@/components/site/CTASection";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "Cambridge Heights College — A Global Education" },
+      {
+        name: "description",
+        content:
+          "Premium UK-accredited degrees in computing, business, security and hospitality. Vibrant student life, international mobility, 94% employability.",
+      },
+      { property: "og:title", content: "Cambridge Heights College" },
+      {
+        property: "og:description",
+        content:
+          "Shape your future with a global education at Cambridge Heights College. Apply for Autumn 2026.",
+      },
+      { property: "og:url", content: "/" },
+    ],
+    links: [{ rel: "canonical", href: "/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollegeOrUniversity",
+          name: "Cambridge Heights College",
+          url: "/",
+          foundingDate: "1894",
+          description:
+            "An independent college offering UK-accredited undergraduate and postgraduate degrees.",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "42 Trinity Lane",
+            addressLocality: "Cambridge Heights",
+          },
+        }),
+      },
     ],
   }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main>
+      <Header />
+      <HeroVideoSection />
+      <SearchTabs />
+      <MoreThanCollege />
+      <FeaturedCourses />
+      <LifeBento />
+      <VirtualTour />
+      <GlobalExperience />
+      <PartnerMarquee />
+      <WhatsNew />
+      <TestimonialSlider />
+      <CTASection />
+      <Footer />
+    </main>
   );
 }
