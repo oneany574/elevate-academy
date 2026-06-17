@@ -5,7 +5,8 @@ import { Menu, Search, X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { courses } from "@/data/courses";
 
-const NAV = [
+type NavItem = { label: string; to: string; mega?: boolean };
+const NAV: NavItem[] = [
   { label: "About", to: "/about" },
   { label: "Courses", to: "/courses", mega: true },
   { label: "Admissions", to: "/admissions" },
@@ -13,7 +14,7 @@ const NAV = [
   { label: "Gallery", to: "/gallery" },
   { label: "News", to: "/news" },
   { label: "Contact", to: "/contact" },
-] as const;
+];
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
