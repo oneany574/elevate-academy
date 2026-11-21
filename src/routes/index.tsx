@@ -29,6 +29,8 @@ export const Route = createFileRoute("/")({
           "Shape your future with a global education at Cambridge Heights College. Apply for Autumn 2026.",
       },
       { property: "og:url", content: "/" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "/" }],
     scripts: [
