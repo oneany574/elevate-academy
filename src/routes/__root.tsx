@@ -8,11 +8,15 @@ import {
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SmoothScroll } from "@/components/site/SmoothScroll";
+import { supabase } from "@/integrations/supabase/client";
+import { AccountContext } from "@/components/assistant/AccountContext";
+import { AssistantEntry } from "@/components/assistant/AssistantEntry";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -125,12 +129,30 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+  const [account, setAccount] = useState({ signedIn: false, loading: true });
+  useEffect(() => {
+    let alive = true;
+    void supabase.auth.getUser().then(({ data }) => { if (alive) setAccount({ signedIn: Boolean(data.user), loading: false }); });
+    const { data } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
+      setAccount({ signedIn: Boolean(session), loading: false });
+      if (event === "SIGNED_OUT") { void queryClient.cancelQueries(); queryClient.clear(); }
+      void router.invalidate();
+      if (event !== "SIGNED_OUT") void queryClient.invalidateQueries();
+    });
+    return () => { alive = false; data.subscription.unsubscribe(); };
+  }, [queryClient, router]);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SmoothScroll>
-        <Outlet />
-      </SmoothScroll>
+      <AccountContext.Provider value={account}>
+        <SmoothScroll>
+          <Outlet />
+          <AssistantEntry />
+        </SmoothScroll>
+        <Toaster />
+      </AccountContext.Provider>
     </QueryClientProvider>
   );
 }

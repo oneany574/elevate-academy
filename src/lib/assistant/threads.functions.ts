@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
+import { validateUIMessages } from "ai";
 
 const idSchema = z.object({ threadId: z.string().uuid() }).strict();
 
@@ -21,7 +22,8 @@ export const getThread = createServerFn({ method: "GET" }).middleware([requireSu
   if (thread.error || !thread.data) throw new Error("Conversation not found.");
   const messages = await context.supabase.from("assistant_messages").select("message").eq("thread_id", data.threadId).eq("user_id", context.userId).order("created_at").order("id").limit(1000);
   if (messages.error) throw new Error("Could not load conversation messages.");
-  return { thread: thread.data, messages: messages.data.map((row) => row.message) };
+  const validated = await validateUIMessages({ messages: messages.data.map((row) => row.message) });
+  return { thread: thread.data, messagesJson: JSON.stringify(validated) };
 });
 
 export const deleteThread = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth]).inputValidator((input: { threadId: string }) => idSchema.parse(input)).handler(async ({ context, data }) => {

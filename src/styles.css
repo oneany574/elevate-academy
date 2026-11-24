@@ -256,3 +256,21 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
+
+/* Google sign-in branding roles. */
+:root {
+  --google-button-background: #ffffff;
+  --google-button-border: #747775;
+  --google-button-foreground: #1f1f1f;
+}
+.dark {
+  --google-button-background: #131314;
+  --google-button-border: #8e918f;
+  --google-button-foreground: #e3e3e3;
+}
+.google-sign-in,
+.google-sign-in:hover {
+  background: var(--google-button-background);
+  border-color: var(--google-button-border);
+  color: var(--google-button-foreground);
+}

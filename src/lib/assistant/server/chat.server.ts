@@ -1,4 +1,4 @@
-import { streamText, convertToModelMessages, validateUIMessages, stepCountIs } from "ai";
+import { streamText, convertToModelMessages, validateUIMessages, stepCountIs, type UIMessage, type UIDataTypes, type InferUITools } from "ai";
 import { z } from "zod";
 import type { Json } from "@/integrations/supabase/types";
 import { authenticateAssistant } from "./auth.server";
@@ -34,7 +34,7 @@ export async function handleAssistantChat(request: Request): Promise<Response> {
   const rawMessages = [...history.data.filter((row) => row.sdk_id !== input.data.id).map((row) => row.message), input.data];
   if (JSON.stringify(rawMessages).length > 200_000) return Response.json({ message: "This conversation is too large. Start a new conversation to continue." }, { status: 400 });
   let messages;
-  try { messages = await validateUIMessages({ messages: rawMessages, tools }); }
+  try { messages = await validateUIMessages<UIMessage<unknown, UIDataTypes, InferUITools<typeof tools>>>({ messages: rawMessages, tools }); }
   catch { return Response.json({ message: "Conversation history could not be validated." }, { status: 400 }); }
   const claim = await client.rpc("claim_assistant_run", { p_thread_id: threadId });
   if (claim.error || !claim.data) return Response.json({ message: claim.error?.message ?? "Could not start this request." }, { status: 429 });
