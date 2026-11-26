@@ -7,6 +7,6 @@
 - [x] Enable Lovable Cloud for sign-in and conversation storage.
 - [x] Keep accounts simple without extra profile data, as confirmed.
 - [x] Create owner-scoped conversation/message storage and read-only catalogue tools.
-- [ ] Connect conversation pages, sign-in and assistant entry.
-- [ ] Verify live answers, follow-up context, two-thread reload restoration, isolation and error handling.
+- [x] Connect conversation pages, sign-in and assistant entry.
+- [x] Verify live answers, follow-up context, two-thread reload restoration, isolation and error handling.
 - Student/finance/attendance actions are outside the confirmed scope; this website has no such services.

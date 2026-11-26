@@ -12,3 +12,4 @@
 - Keep assistant tools limited to existing editorial catalogue data and supported application services; this prevents inventing operational capabilities.
 - Use route-derived conversation IDs and owner-scoped Cloud persistence for separate assistant conversations; this prevents history mixing and cross-account access.
 - Compose chat messages, tools, loading and input with installed AI Elements; this preserves the AI SDK transport and accessible interaction primitives.
+- Generate a unique assistant message ID for each streamed reply and disable sending during route transitions; this prevents overwritten replies and messages sent to a departing conversation.
